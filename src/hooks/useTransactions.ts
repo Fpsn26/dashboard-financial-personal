@@ -28,16 +28,49 @@ export default function useTransactions() {
         }
     }, [transaction])
 
-    function addTransaction() {
+    function addTransaction(data: Omit<Transaction, 'id'>) {
+        try {
+            const id = crypto.randomUUID();
 
+            const newTransaction: Transaction = {
+                id,
+                description: data.description,
+                value: data.value,
+                type: data.type,
+                category: data.category,
+                date: data.date
+            }
+
+            setTransaction(prev => [...prev, newTransaction])
+        } catch (error) {
+            console.log("Erro na adição de nova transação: ", error);
+        }
     }
 
-    function updateTransaction() {
-
+    function updateTransaction(id: string, updatedData: Partial<Omit<Transaction, 'id'>>) {
+        try {
+            setTransaction(prev =>
+                prev.map(item =>
+                    item.id === id
+                        ? { ...item, ...updatedData }
+                        : item
+                )
+            )
+        } catch (error) {
+            console.log("Erro ao atualizar transação: ", error);
+        }
     }
 
-    function deleteTransaction() {
-
+    function deleteTransaction(id: string) {
+        try {
+            setTransaction(prev =>
+                prev.filter(item =>
+                    item.id !== id
+                )
+            )
+        } catch (error) {
+            console.log("Erro ao deletar transação: ", error);
+        }
     }
 
     return { transaction, addTransaction, updateTransaction, deleteTransaction };
