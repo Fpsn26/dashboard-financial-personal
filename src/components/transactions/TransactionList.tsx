@@ -4,9 +4,10 @@ interface TransactionListProps {
     transaction: Transaction[];
     onDelete: (id: string) => void;
     onEdit: (id: string, data: Omit<Transaction, 'id'>) => void;
+    onStartEdit: (transaction: Transaction) => void;
 }
 
-export default function TransactionList({ transaction, onDelete, onEdit }: TransactionListProps) {
+export default function TransactionList({ transaction, onDelete, onEdit, onStartEdit }: TransactionListProps) {
     function formatDate(isoString: string) {
         const date = new Date(isoString);
 
@@ -41,8 +42,7 @@ export default function TransactionList({ transaction, onDelete, onEdit }: Trans
                     <p>Tipo: {item.type}</p>
 
                     <button onClick={() => {
-                        const { id, ...data } = item;
-                        onEdit(id, data)
+                        onStartEdit(item)
                     }}>Editar</button>
                     <button onClick={() => onDelete(item.id)}>Excluir</button>
                 </div>

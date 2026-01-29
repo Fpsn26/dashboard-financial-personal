@@ -1,13 +1,16 @@
 "use client"
 
 import { expense, ExpenseCategory, revenue, RevenueCategory, Transaction, TypeTransaction } from "@/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface TransactionFormProps {
     onAdd: (data: Omit<Transaction, 'id'>) => void;
+    onUpdate: (id: string, data: Omit<Transaction, 'id'>) => void;
+    editingTransaction: Transaction | null;
+    onCancelEdit: () => void;
 }
 
-export default function TransactionForm({ onAdd }: TransactionFormProps) {
+export default function TransactionForm({ onAdd, onUpdate, editingTransaction, onCancelEdit }: TransactionFormProps) {
     const [description, setDescription] = useState("");
     const [value, setValue] = useState(0.0);
     const [date, setDate] = useState("");
@@ -25,7 +28,11 @@ export default function TransactionForm({ onAdd }: TransactionFormProps) {
             date
         }
 
-        onAdd(transactionData);
+        if (editingTransaction) {
+            onUpdate(editingTransaction.id, transactionData);
+        } else {
+            onAdd(transactionData);
+        }
 
         setDescription("");
         setValue(0);
@@ -35,6 +42,16 @@ export default function TransactionForm({ onAdd }: TransactionFormProps) {
     }
 
     const categoriesToShow = selectedType === 'Revenue' ? revenue : expense;
+
+    useEffect(() => {
+        if (editingTransaction) {
+            setDescription(editingTransaction.description);
+            setValue(editingTransaction.value);
+            setDate(editingTransaction.date);
+            setSelectedType(editingTransaction.type);
+            setSelectedCategory(editingTransaction.category);
+        }
+    }, [editingTransaction]);
 
     return (
         <div className="bg-[rgb(50,130,184)] rounded-lg m-5">
@@ -84,8 +101,15 @@ export default function TransactionForm({ onAdd }: TransactionFormProps) {
                     required
                 />
 
-                <button type="submit">Adicionar Transação</button>
+                <button type="submit">
+                    {editingTransaction ? "Atualizar Transação" : "Adicionar Transação"}
+                </button>
 
+                {editingTransaction && (
+                    <button type="button" onClick={onCancelEdit}>
+                        Cancelar Edição
+                    </button>
+                )}
 
             </form>
         </div>
