@@ -7,7 +7,7 @@ export type Transaction = {
     date: string;
 }
 
-type TypeTransaction = 'revenue' | 'expense';
+export type TypeTransaction = 'Revenue' | 'Expense';
 
 export type ExpenseCategory = 'Alimentação' | 'Transporte' | 'Saúde' | 'Lazer';
 

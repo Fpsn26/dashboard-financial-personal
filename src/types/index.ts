@@ -1,3 +1,3 @@
-export type { Transaction, ExpenseCategory, RevenueCategory } from "./transaction";
+export type { Transaction, ExpenseCategory, RevenueCategory, TypeTransaction } from "./transaction";
 
 export { expense, revenue } from "./category";

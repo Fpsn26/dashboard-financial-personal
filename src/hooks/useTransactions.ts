@@ -1,3 +1,5 @@
+"use client"
+
 import { Transaction } from "@/types";
 import { useEffect, useState } from "react";
 
