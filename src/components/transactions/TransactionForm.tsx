@@ -12,7 +12,7 @@ interface TransactionFormProps {
 
 export default function TransactionForm({ onAdd, onUpdate, editingTransaction, onCancelEdit }: TransactionFormProps) {
     const [description, setDescription] = useState("");
-    const [value, setValue] = useState(0.0);
+    const [value, setValue] = useState(0);
     const [date, setDate] = useState("");
     const [selectedCategory, setSelectedCategory] = useState<ExpenseCategory | RevenueCategory | ''>("");
     const [selectedType, setSelectedType] = useState<TypeTransaction | ''>("");
@@ -30,6 +30,7 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
 
         if (editingTransaction) {
             onUpdate(editingTransaction.id, transactionData);
+            onCancelEdit();
         } else {
             onAdd(transactionData);
         }

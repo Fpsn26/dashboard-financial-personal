@@ -17,6 +17,9 @@ export default function Page() {
             <div className="flex flex-2 flex-row">
                 <TransactionForm
                     onAdd={addTransaction}
+                    onUpdate={updateTransaction}
+                    editingTransaction={editingTransaction}
+                    onCancelEdit={() => setEditingTransaction(null)}
                 />
 
                 <TransactionList
