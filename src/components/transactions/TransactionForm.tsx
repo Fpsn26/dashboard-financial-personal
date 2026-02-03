@@ -79,8 +79,8 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
 
                 <select value={selectedType} onChange={(e) => setSelectedType(e.target.value as TypeTransaction)} required>
                     <option value="">Selecione o tipo</option>
-                    <option value="revenue">Revenue</option>
-                    <option value="expense">Expense</option>
+                    <option value="Revenue">Revenue</option>
+                    <option value="Expense">Expense</option>
                 </select>
 
                 {selectedType && (
