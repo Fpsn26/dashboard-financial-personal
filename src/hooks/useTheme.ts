@@ -29,9 +29,7 @@ export default function useTheme() {
     }, [theme]);
 
     const toggleTheme = () => {
-        console.log('Tema atual:', theme);
         const newTheme = theme === 'dark' ? 'light' : 'dark';
-        console.log('Novo tema:', newTheme);
         setTheme(newTheme);
     }
 

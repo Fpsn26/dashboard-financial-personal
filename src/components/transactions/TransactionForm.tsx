@@ -2,6 +2,7 @@
 
 import { expense, ExpenseCategory, revenue, RevenueCategory, Transaction, TypeTransaction } from "@/types";
 import { useEffect, useState } from "react";
+import { Plus } from 'lucide-react';
 
 interface TransactionFormProps {
     onAdd: (data: Omit<Transaction, 'id'>) => void;
@@ -55,63 +56,43 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
     }, [editingTransaction]);
 
     return (
-        <div className="bg-[rgb(50,130,184)] rounded-lg m-5 text-black">
-            <form onSubmit={handleSubmit} className="grid p-6">
-                <label>Descrição: </label>
-                <input
-                    type="text"
-                    name="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Digite a descrição da transação"
-                    required
-                />
+        <div className="glass-card p-6">
+            <h2 className="text-xl font-bold text- mb-6 flex items-center gap-2">
+                <Plus className="w-5 h-5" />
+                {editingTransaction ? "Editar Transação" : "Nova Transação"}
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-5">
+                <div>
+                    <label className="block text-/80 text-sm font-medium mb-2">Descrição</label>
+                    <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} className="input-styled" placeholder="Ex: iFood" required />
+                </div>
 
-                <label>Valor: </label>
-                <input
-                    type="number"
-                    name="value"
-                    value={value}
-                    onChange={(e) => setValue(parseFloat(e.target.value))}
-                    placeholder="Digite o valor da transação. Ex.: 17,50"
-                    required
-                />
+                <div>
+                    <label className="block text-/80 text-sm font-medium mb-2">Valor</label>
+                    <input type="number" value={value} onChange={(e) => setValue(parseFloat(e.target.value))} className="input-styled" placeholder="0.00" required />
+                </div>
 
-                <select value={selectedType} onChange={(e) => setSelectedType(e.target.value as TypeTransaction)} required>
-                    <option value="">Selecione o tipo</option>
-                    <option value="Revenue">Revenue</option>
-                    <option value="Expense">Expense</option>
-                </select>
-
-                {selectedType && (
-                    <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value as ExpenseCategory | RevenueCategory)} required>
-                        <option value="categoria">Selecione uma categoria</option>
-                        {categoriesToShow.map(cat => (
-                            <option key={cat} value={cat}>{cat}</option>
-                        ))}
+                <div className="grid grid-cols-2 gap-4">
+                    <select value={selectedType} onChange={(e) => setSelectedType(e.target.value as TypeTransaction)} className="input-styled" required>
+                        <option value="">Tipo</option>
+                        <option value="Revenue">Receita</option>
+                        <option value="Expense">Despesa</option>
                     </select>
-                )}
 
-                <label>Data: </label>
-                <input
-                    type="datetime-local"
-                    name="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    placeholder="Selecione a data que a transação foi feita"
-                    required
-                />
+                    <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value as any)} className="input-styled" required>
+                        <option value="">Categoria</option>
+                        {categoriesToShow.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                    </select>
+                </div>
 
-                <button type="submit">
-                    {editingTransaction ? "Atualizar Transação" : "Adicionar Transação"}
+                <div>
+                    <label className="block text-/80 text-sm font-medium mb-2">Data</label>
+                    <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} className="input-styled" required />
+                </div>
+
+                <button type="submit" className="btn-primary">
+                    {editingTransaction ? "Atualizar" : "Adicionar"}
                 </button>
-
-                {editingTransaction && (
-                    <button type="button" onClick={onCancelEdit}>
-                        Cancelar Edição
-                    </button>
-                )}
-
             </form>
         </div>
     );

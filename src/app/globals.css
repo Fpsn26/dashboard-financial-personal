@@ -1,3 +1,57 @@
 @import "tailwindcss";
 
 @variant dark (&:where(.dark, .dark *));
+
+:root {
+    --primary-900: 27, 38, 44;
+    --primary-800: 15, 76, 117;
+    --primary-600: 50, 130, 184;
+    --primary-200: 187, 225, 250;
+}
+
+@layer components {
+    .glass-card {
+        background-color: rgba(var(--primary-800), 0.4);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(var(--primary-600), 0.3);
+        @apply rounded-2xl shadow-2xl;
+    }
+
+    .input-styled {
+        background-color: rgba(var(--primary-900), 0.5);
+        border: 1px solid rgba(var(--primary-600), 0.3);
+        color: rgb(var(--primary-200));
+        @apply w-full px-4 py-3 rounded-lg transition-all duration-200;
+    }
+
+    .input-styled::placeholder {
+        color: rgba(var(--primary-200), 0.4);
+    }
+
+    .input-styled:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgb(var(--primary-600));
+    }
+
+    .btn-primary {
+        background: linear-gradient(to right, rgb(var(--primary-600)), rgb(var(--primary-800)));
+        @apply w-full py-3 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl;
+    }
+}
+
+body {
+    background: linear-gradient(135deg, rgb(var(--primary-900)), rgb(var(--primary-800)), rgb(var(--primary-900)));
+    min-height: 100vh;
+    color: rgb(var(--primary-200));
+}
+
+@media (max-width: 768px) {
+    .hide-on-mobile {
+        display: none;
+    }
+
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

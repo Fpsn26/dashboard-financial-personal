@@ -1,5 +1,5 @@
 export type FilterState = {
-    type: 'all' | 'revenue' | 'expense';
+    type: 'all' | 'Revenue' | 'Expense';
     category: string;
     startDate: string;
     endDate: string;
