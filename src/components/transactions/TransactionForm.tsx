@@ -55,7 +55,7 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
     }, [editingTransaction]);
 
     return (
-        <div className="bg-[rgb(50,130,184)] rounded-lg m-5">
+        <div className="bg-[rgb(50,130,184)] rounded-lg m-5 text-black">
             <form onSubmit={handleSubmit} className="grid p-6">
                 <label>Descrição: </label>
                 <input
