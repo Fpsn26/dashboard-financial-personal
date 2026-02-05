@@ -69,4 +69,3 @@ Durante o desenvolvimento deste projeto, aprimorei meus conhecimentos em:
 
 [LinkedIn](https://www.linkedin.com/in/felipe-sanches-nunes/)
 
-```
