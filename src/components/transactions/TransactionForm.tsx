@@ -2,7 +2,8 @@
 
 import { expense, ExpenseCategory, revenue, RevenueCategory, Transaction, TypeTransaction } from "@/types";
 import { useEffect, useState } from "react";
-import { Plus } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
+import { useTheme } from "@/components/ThemeProvider";
 
 interface TransactionFormProps {
     onAdd: (data: Omit<Transaction, 'id'>) => void;
@@ -12,8 +13,10 @@ interface TransactionFormProps {
 }
 
 export default function TransactionForm({ onAdd, onUpdate, editingTransaction, onCancelEdit }: TransactionFormProps) {
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
     const [description, setDescription] = useState("");
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState<number>(0);
     const [date, setDate] = useState("");
     const [selectedCategory, setSelectedCategory] = useState<ExpenseCategory | RevenueCategory | ''>("");
     const [selectedType, setSelectedType] = useState<TypeTransaction | ''>("");
@@ -23,7 +26,7 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
 
         const transactionData: Omit<Transaction, 'id'> = {
             description,
-            value,
+            value: isNaN(value) ? 0 : value,
             type: selectedType as TypeTransaction,
             category: selectedCategory as (ExpenseCategory | RevenueCategory),
             date
@@ -57,36 +60,58 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
 
     return (
         <div className="glass-card p-6">
-            <h2 className="text-xl font-bold text- mb-6 flex items-center gap-2">
-                <Plus className="w-5 h-5" />
-                {editingTransaction ? "Editar Transação" : "Nova Transação"}
-            </h2>
+            <div className="flex items-center justify-between mb-6">
+                <h2 className={`text-xl font-bold flex items-center gap-2 ${isDark ? 'text-[rgb(187,225,250)]' : 'text-gray-900'}`}>
+                    <Plus className="w-5 h-5" />
+                    {editingTransaction ? "Editar Transação" : "Nova Transação"}
+                </h2>
+                {editingTransaction && (
+                    <button
+                        onClick={onCancelEdit}
+                        className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-[rgb(50,130,184)]/20 text-[rgb(187,225,250)]/60' : 'hover:bg-gray-100 text-gray-600'}`}
+                    >
+                        <X size={18} />
+                    </button>
+                )}
+            </div>
             <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                    <label className="block text-/80 text-sm font-medium mb-2">Descrição</label>
+                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-[rgb(187,225,250)]' : 'text-gray-700'}`}>Descrição</label>
                     <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} className="input-styled" placeholder="Ex: iFood" required />
                 </div>
 
                 <div>
-                    <label className="block text-/80 text-sm font-medium mb-2">Valor</label>
-                    <input type="number" value={value} onChange={(e) => setValue(parseFloat(e.target.value))} className="input-styled" placeholder="0.00" required />
+                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-[rgb(187,225,250)]' : 'text-gray-700'}`}>Valor</label>
+                    <input
+                        type="number"
+                        value={isNaN(value) ? "" : value}
+                        onChange={(e) => setValue(parseFloat(e.target.value))}
+                        step="0,01"
+                        className="input-styled"
+                        placeholder="0,00"
+                        required
+                    />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                    <select value={selectedType} onChange={(e) => setSelectedType(e.target.value as TypeTransaction)} className="input-styled" required>
-                        <option value="">Tipo</option>
-                        <option value="Revenue">Receita</option>
-                        <option value="Expense">Despesa</option>
-                    </select>
+                    <div>
+                        <select value={selectedType} onChange={(e) => setSelectedType(e.target.value as TypeTransaction)} className="input-styled" required>
+                            <option value="">Tipo</option>
+                            <option value="Revenue">Receita</option>
+                            <option value="Expense">Despesa</option>
+                        </select>
+                    </div>
 
-                    <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value as any)} className="input-styled" required>
-                        <option value="">Categoria</option>
-                        {categoriesToShow.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                    </select>
+                    <div>
+                        <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value as any)} className="input-styled" required>
+                            <option value="">Categoria</option>
+                            {categoriesToShow.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                        </select>
+                    </div>
                 </div>
 
                 <div>
-                    <label className="block text-/80 text-sm font-medium mb-2">Data</label>
+                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-[rgb(187,225,250)]' : 'text-gray-700'}`}>Data</label>
                     <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} className="input-styled" required />
                 </div>
 

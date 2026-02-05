@@ -1,6 +1,7 @@
 import { expense, revenue, Transaction, TypeTransaction } from "@/types";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
+import { useTheme } from "@/components/ThemeProvider";
 
 interface PieChartProps {
     transaction: Transaction[];
@@ -10,6 +11,8 @@ interface PieChartProps {
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function PieChart({ transaction, type }: PieChartProps) {
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
     const filteredByFilter = transaction.filter(t => {
         if (type === 'all') return true;
         return t.type === type;
@@ -33,10 +36,35 @@ export default function PieChart({ transaction, type }: PieChartProps) {
         datasets: [{
             data: values,
             backgroundColor: colors,
+            borderWidth: isDark ? 0 : 2,
+            borderColor: isDark ? 'transparent' : '#fff',
         }]
     }
 
+    const options = {
+        plugins: {
+            legend: {
+                labels: {
+                    color: isDark ? 'rgb(187, 225, 250)' : 'rgb(31, 41, 55)',
+                    font: {
+                        size: 12,
+                        weight: '500' as const
+                    }
+                }
+            },
+            tooltip: {
+                backgroundColor: isDark ? 'rgba(27, 38, 44, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+                titleColor: isDark ? 'rgb(187, 225, 250)' : 'rgb(31, 41, 55)',
+                bodyColor: isDark ? 'rgb(187, 225, 250)' : 'rgb(75, 85, 99)',
+                borderColor: isDark ? 'rgb(50, 130, 184)' : 'rgb(229, 231, 235)',
+                borderWidth: 1,
+            }
+        }
+    }
+
     return (
-        <Pie data={data} />
+        <div className="flex items-center justify-center">
+            <Pie data={data} />
+        </div>
     );
 }
