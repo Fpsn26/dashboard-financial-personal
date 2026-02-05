@@ -63,6 +63,9 @@ Durante o desenvolvimento deste projeto, aprimorei meus conhecimentos em:
 * **Estilização Avançada**: Exploração das novas capacidades do Tailwind CSS 4.
 * **Gráficos Dinâmicos**: Integração do Chart.js com o estado do React para atualizações em tempo real.
 
+### Contribuições e Feedbacks
+Feedbacks e sugestões de melhorias são bem-vindos e fundamentais para o aprimoramento deste projeto. Sinta-se à vontade para entrar em contato ou abrir uma issue no repositório.
+
 ## 👤 Autor
 
 **Felipe Sanches Nunes**
