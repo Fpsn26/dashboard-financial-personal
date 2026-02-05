@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# 📊 Financial Dashboard
 
-First, run the development server:
+Projeto de um dashboard de finanças pessoais interativo desenvolvido com React, Next.js e TypeScript. O sistema permite ao usuário gerenciar suas receitas e despesas, oferecendo uma visão clara do saldo total, filtragem dinâmica de transações e visualização de dados através de gráficos. O projeto foi construído com foco em performance e uma experiência de usuário moderna.
+
+## 🔗 Demonstração
+Acesse o projeto online: [CLIQUE AQUI PARA ACESSAR O SITE](https://dashboard-financial-rouge.vercel.app/)
+
+## 🚀 Tecnologias
+
+- **Framework**: Next.js 15 (App Router)
+- **Biblioteca UI**: React 19
+- **Linguagem**: TypeScript
+- **Estilização**: Tailwind CSS 4
+- **Gráficos**: Chart.js / React-Chartjs-2
+- **Ícones**: Lucide React
+- **Deploy**: Vercel
+
+## ✨ Funcionalidades
+
+- **Gerenciamento de Transações**: Adição, edição e exclusão de receitas e despesas com armazenamento persistente no `localStorage`.
+- **Resumo Financeiro**: Cards dinâmicos com total de receitas, despesas e saldo líquido.
+- **Filtros Avançados**: Filtragem por tipo, categoria e intervalo de datas.
+- **Alternância de Temas**: Suporte nativo a Modo Dark e Modo Light com persistência.
+- **Visualização por Gráficos**: Gráfico de pizza interativo que agrupa gastos por categoria.
+- **Design Responsivo**: Interface adaptada para dispositivos móveis e desktop, utilizando Glassmorphism.
+
+## 📋 Pré-requisitos
+
+- Node.js instalado (versão 20.9.0 ou superior)
+- Gerenciador de pacotes (npm, yarn, pnpm ou bun)
+
+## 🖥️ Como rodar o projeto localmente
+
+1. Clone o repositório
+```bash
+git clone [https://github.com/Fpsn26/dashboard-financial-personal](https://github.com/Fpsn26/dashboard-financial-personal)
+
+```
+
+2. Instale as dependências
+
+```bash
+npm install
+
+```
+
+3. Execute o projeto
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Abra [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) no seu navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📚 Aprendizados
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Durante o desenvolvimento deste projeto, aprimorei meus conhecimentos em:
 
-## Learn More
+* **Persistência de Dados**: Uso de `localStorage` para manter dados do usuário sem necessidade de um backend externo.
+* **Hooks Customizados**: Criação do `useTransactions` para centralizar a lógica de negócio.
+* **Estilização Avançada**: Exploração das novas capacidades do Tailwind CSS 4.
+* **Gráficos Dinâmicos**: Integração do Chart.js com o estado do React para atualizações em tempo real.
 
-To learn more about Next.js, take a look at the following resources:
+## 👤 Autor
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Felipe Sanches Nunes**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+[LinkedIn](https://www.linkedin.com/in/felipe-sanches-nunes/)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
