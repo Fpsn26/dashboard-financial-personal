@@ -16,7 +16,7 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
     const { theme } = useTheme();
     const isDark = theme === 'dark';
     const [description, setDescription] = useState("");
-    const [value, setValue] = useState<number>(0);
+    const [value, setValue] = useState<number | ''>('');
     const [date, setDate] = useState("");
     const [selectedCategory, setSelectedCategory] = useState<ExpenseCategory | RevenueCategory | ''>("");
     const [selectedType, setSelectedType] = useState<TypeTransaction | ''>("");
@@ -24,12 +24,19 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
+        if (!value || value <= 0) {
+            alert('Por favor, insira um valor maior que zero');
+            return;
+        }
+
+        const finalDate = date || new Date().toISOString().split('T')[0];
+
         const transactionData: Omit<Transaction, 'id'> = {
             description,
-            value: isNaN(value) ? 0 : value,
+            value: Number(value),
             type: selectedType as TypeTransaction,
             category: selectedCategory as (ExpenseCategory | RevenueCategory),
-            date
+            date: finalDate
         }
 
         if (editingTransaction) {
@@ -40,7 +47,7 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
         }
 
         setDescription("");
-        setValue(0);
+        setValue('');
         setDate("");
         setSelectedCategory("");
         setSelectedType("")
@@ -84,11 +91,14 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
                     <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-[rgb(187,225,250)]' : 'text-gray-700'}`}>Valor</label>
                     <input
                         type="number"
-                        value={isNaN(value) ? "" : value}
-                        onChange={(e) => setValue(parseFloat(e.target.value))}
+                        value={value}
+                        onChange={(e) => {
+                            const inputValue = e.target.value;
+                            setValue(inputValue === '' ? '' : parseFloat(inputValue));
+                        }}
                         step="0,01"
                         className="input-styled"
-                        placeholder="0,00"
+                        placeholder="00,00"
                         required
                     />
                 </div>
@@ -103,16 +113,18 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
                     </div>
 
                     <div>
-                        <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value as any)} className="input-styled" required>
-                            <option value="">Categoria</option>
-                            {categoriesToShow.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                        </select>
+                        {selectedType &&
+                            <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value as any)} className="input-styled" required>
+                                <option value="">Categoria</option>
+                                {categoriesToShow.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                            </select>
+                        }
                     </div>
                 </div>
 
                 <div>
-                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-[rgb(187,225,250)]' : 'text-gray-700'}`}>Data</label>
-                    <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} className="input-styled" required />
+                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-[rgb(187,225,250)]' : 'text-gray-700'}`}>Data (Opcional)</label>
+                    <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="input-styled" />
                 </div>
 
                 <button type="submit" className="btn-primary">

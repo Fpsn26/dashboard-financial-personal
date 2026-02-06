@@ -17,9 +17,7 @@ export default function TransactionList({ transaction, onDelete, onEdit, onStart
         const day = date.getDate().toString().padStart(2, "0");
         const month = (date.getMonth() + 1).toString().padStart(2, "0");
         const year = date.getFullYear();
-        const hour = date.getHours().toString().padStart(2, "0");
-        const minute = date.getMinutes().toString().padStart(2, "0");
-        return `${day}/${month}/${year} - ${hour}:${minute}`;
+        return `${day}/${month}/${year}`;
     }
 
     if (transaction.length === 0) {
@@ -39,8 +37,8 @@ export default function TransactionList({ transaction, onDelete, onEdit, onStart
                     <div className="flex items-center justify-between gap-3">
                         <div className="flex items-center gap-3 min-w-0 flex-1">
                             <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${item.type === 'Revenue'
-                                    ? isDark ? 'bg-emerald-400/20 text-emerald-400' : 'bg-emerald-100 text-emerald-600'
-                                    : isDark ? 'bg-red-400/20 text-red-400' : 'bg-red-100 text-red-600'
+                                ? isDark ? 'bg-emerald-400/20 text-emerald-400' : 'bg-emerald-100 text-emerald-600'
+                                : isDark ? 'bg-red-400/20 text-red-400' : 'bg-red-100 text-red-600'
                                 }`}>
                                 {item.type === 'Revenue' ? <TrendingUp size={18} /> : <TrendingDown size={18} />}
                             </div>
@@ -55,12 +53,12 @@ export default function TransactionList({ transaction, onDelete, onEdit, onStart
 
                         <div className="flex flex-col items-end shrink-0 gap-1">
                             <div className={`text-sm sm:text-lg font-bold whitespace-nowrap ${item.type === 'Revenue'
-                                    ? isDark ? 'text-emerald-300' : 'text-emerald-600'
-                                    : isDark ? 'text-red-300' : 'text-red-600'
+                                ? isDark ? 'text-emerald-300' : 'text-emerald-600'
+                                : isDark ? 'text-red-300' : 'text-red-600'
                                 }`}>
                                 {item.type === 'Revenue' ? '+' : '-'} R$ {item.value.toFixed(2)}
                             </div>
-                            <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="flex gap-2 opacity-100">
                                 <button onClick={() => onStartEdit(item)} className={`p-1 rounded ${isDark ? 'hover:bg-[rgb(50,130,184)]/40 text-[rgb(187,225,250)]/70' : 'hover:bg-blue-100 text-blue-600'}`}><Edit2 size={14} /></button>
                                 <button onClick={() => onDelete(item.id)} className={`p-1 rounded ${isDark ? 'hover:bg-red-500/30 text-red-300/80' : 'hover:bg-red-100 text-red-600'}`}><Trash2 size={14} /></button>
                             </div>
