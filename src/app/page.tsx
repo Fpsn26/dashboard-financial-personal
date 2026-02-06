@@ -71,7 +71,7 @@ export default function Page() {
             </header>
 
             <main className="container mx-auto px-4 py-6">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:items-start">
                     <div className="lg:col-span-4 space-y-6 order-2 lg:order-1 min-w-0">
                         <TransactionForm
                             onAdd={addTransaction}
@@ -141,7 +141,7 @@ export default function Page() {
                     </div>
 
                     <div className="lg:col-span-8 order-1 lg:order-2 min-w-0">
-                        <div className={`flex flex-col min-h-125 overflow-hidden rounded-xl border transition-colors ${theme === 'dark'
+                        <div className={`flex flex-col h-full overflow-hidden max-h-127 rounded-xl border transition-colors ${theme === 'dark'
                             ? 'glass-card'
                             : 'bg-white border-gray-200'
                             }`}>
@@ -187,11 +187,13 @@ export default function Page() {
                                 </div>
                             </div>
 
-                            <div className="flex-1 p-4 md:p-6 overflow-y-auto max-h-150 scrollbar-thin scrollbar-thumb-[rgb(50,130,184)]/20">
+                            <div className="flex-1 p-4 md:p-6 overflow-y-auto scrollbar-thin scrollbar-thumb-[rgb(50,130,184)]/20">
                                 {view === 'list' ? (
                                     <TransactionList transaction={filteredTransactions} onDelete={deleteTransaction} onEdit={updateTransaction} onStartEdit={setEditingTransaction} />
                                 ) : (
-                                    <PieChart transaction={filteredTransactions} type={chartType} />
+                                    <div className="pb-8 md:pb-12">
+                                        <PieChart transaction={filteredTransactions} type={chartType} />
+                                    </div>
                                 )}
                             </div>
                         </div>

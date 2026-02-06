@@ -42,6 +42,8 @@ export default function PieChart({ transaction, type }: PieChartProps) {
     }
 
     const options = {
+        responsive: true,
+        maintainAspectRatio: true,
         plugins: {
             legend: {
                 labels: {
@@ -63,8 +65,10 @@ export default function PieChart({ transaction, type }: PieChartProps) {
     }
 
     return (
-        <div className="flex items-center justify-center">
-            <Pie data={data} />
+        <div className="flex items-center justify-center w-full h-full">
+            <div className="w-full max-w-xs md:max-w-sm">
+                <Pie data={data} />
+            </div>
         </div>
     );
 }

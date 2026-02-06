@@ -46,7 +46,7 @@ export default function TransactionList({ transaction, onDelete, onEdit, onStart
                                 <h4 className={`font-bold truncate text-sm sm:text-base ${isDark ? 'text-[rgb(187,225,250)]' : 'text-gray-900'}`}>{item.description}</h4>
                                 <div className="flex items-center gap-2 mt-0.5">
                                     <span className={`text-[10px] px-1.5 py-0.5 rounded truncate max-w-25 font-semibold ${isDark ? 'bg-[rgb(50,130,184)]/30 text-[rgb(187,225,250)]' : 'bg-blue-100 text-blue-800'}`}>{item.category}</span>
-                                    <span className={`text-[10px] whitespace-nowrap hidden sm:inline font-medium ${isDark ? 'text-[rgb(187,225,250)]/60' : 'text-gray-600'}`}>{formatDate(item.date)}</span>
+                                    <span className={`text-[10px] whitespace-nowrap font-medium ${isDark ? 'text-[rgb(187,225,250)]/60' : 'text-gray-600'}`}>{formatDate(item.date)}</span>
                                 </div>
                             </div>
                         </div>

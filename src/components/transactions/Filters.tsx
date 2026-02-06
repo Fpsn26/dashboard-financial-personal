@@ -34,8 +34,8 @@ export default function Filters({ onFilterChange }: FiltersProps) {
             <button
                 onClick={() => setDropdown(!dropdown)}
                 className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg border transition-all ${dropdown
-                        ? isDark ? 'bg-[rgb(50,130,184)] text-white border-[rgb(50,130,184)]' : 'bg-blue-600 text-white border-blue-600'
-                        : isDark ? 'bg-[rgb(15,76,117)]/30 text-[rgb(187,225,250)] border-[rgb(50,130,184)]/30 hover:bg-[rgb(50,130,184)]/20' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                    ? isDark ? 'bg-[rgb(50,130,184)] text-white border-[rgb(50,130,184)]' : 'bg-blue-600 text-white border-blue-600'
+                    : isDark ? 'bg-[rgb(15,76,117)]/30 text-[rgb(187,225,250)] border-[rgb(50,130,184)]/30 hover:bg-[rgb(50,130,184)]/20' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
                     }`}
             >
                 {dropdown ? <X size={16} /> : <Filter size={16} />}
@@ -43,9 +43,9 @@ export default function Filters({ onFilterChange }: FiltersProps) {
             </button>
 
             {dropdown && (
-                <div className="absolute right-0 top-full mt-4 w-screen max-w-[calc(100vw-2rem)] sm:w-100 z-50 glass-card p-4 sm:p-6 shadow-2xl animate-in fade-in slide-in-from-top-2">
+                <div className="fixed inset-x-2 top-20 sm:absolute sm:inset-x-auto sm:right-0 sm:top-full sm:mt-2 w-auto sm:w-80 mt-12 max-w-sm z-50 glass-card p-2 sm:p-4 shadow-2xl animate-in fade-in slide-in-from-top-2">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-0.5">
                             <label className={`text-[10px] font-bold uppercase ml-1 ${isDark ? 'text-[rgb(187,225,250)]/40' : 'text-gray-600'}`}>Tipo</label>
                             <select value={type} onChange={(e) => setType(e.target.value as any)} className="input-styled py-2 text-xs">
                                 <option value="all">Todos</option>
@@ -61,24 +61,25 @@ export default function Filters({ onFilterChange }: FiltersProps) {
                             </select>
                         </div>
                         <div className="flex flex-col gap-1">
-                            <label className={`text-[10px] font-bold uppercase ml-1 ${isDark ? 'text-[rgb(187,225,250)]/40' : 'text-gray-600'}`}>Início</label>
+                            <label className={`text-[10px] font-bold uppercase ml-1 ${isDark ? 'text-[rgb(187,225,250)]/40' : 'text-gray-600'}`}>Data de Início</label>
                             <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="input-styled py-2 text-xs" />
                         </div>
                         <div className="flex flex-col gap-1">
-                            <label className={`text-[10px] font-bold uppercase ml-1 ${isDark ? 'text-[rgb(187,225,250)]/40' : 'text-gray-600'}`}>Fim</label>
+                            <label className={`text-[10px] font-bold uppercase ml-1 ${isDark ? 'text-[rgb(187,225,250)]/40' : 'text-gray-600'}`}>Data de Fim</label>
                             <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="input-styled py-2 text-xs" />
                         </div>
                     </div>
-                    <div className={`flex flex-col sm:flex-row gap-3 mt-6 pt-4 border-t ${isDark ? 'border-[rgb(50,130,184)]/20' : 'border-gray-200'}`}>
-                        <button onClick={handleClearFilter} className={`flex-1 flex items-center justify-center gap-2 py-2 text-[10px] font-bold uppercase ${isDark ? 'text-[rgb(187,225,250)]/50 hover:text-[rgb(187,225,250)]/80' : 'text-gray-600 hover:text-gray-800'}`}>
+                    <div className={`flex flex-col sm:flex-row gap-2 mt-3 pt-2 border-t ${isDark ? 'border-[rgb(50,130,184)]/20' : 'border-gray-200'}`}>
+                        <button onClick={handleClearFilter} className={`flex-1 flex items-center justify-center gap-2 py-1.5 text-[10px] font-bold uppercase ${isDark ? 'text-[rgb(187,225,250)]/50 hover:text-[rgb(187,225,250)]/80' : 'text-gray-600 hover:text-gray-800'}`}>
                             <RotateCcw size={12} /> Resetar
                         </button>
-                        <button onClick={handleApplyFilter} className={`flex-2 flex items-center justify-center gap-2 py-2.5 text-[10px] font-black rounded-lg uppercase tracking-widest shadow-lg ${isDark ? 'bg-[rgb(50,130,184)] text-white hover:bg-[rgb(50,130,184)]/90' : 'bg-blue-600 text-white hover:bg-blue-700'}`}>
+                        <button onClick={handleApplyFilter} className={`flex-2 flex items-center justify-center gap-2 py-2 text-[10px] font-black rounded-lg uppercase tracking-widest shadow-lg ${isDark ? 'bg-[rgb(50,130,184)] text-white hover:bg-[rgb(50,130,184)]/90' : 'bg-blue-600 text-white hover:bg-blue-700'}`}>
                             <Check size={14} /> Aplicar
                         </button>
                     </div>
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     );
 }

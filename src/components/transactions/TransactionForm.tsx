@@ -20,12 +20,26 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
     const [date, setDate] = useState("");
     const [selectedCategory, setSelectedCategory] = useState<ExpenseCategory | RevenueCategory | ''>("");
     const [selectedType, setSelectedType] = useState<TypeTransaction | ''>("");
+    const [errors, setErrors] = useState({
+        description: false,
+        value: false,
+        type: false,
+        category: false
+    })
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!value || value <= 0) {
-            alert('Por favor, insira um valor maior que zero');
+        const newErros = {
+            description: !description.trim(),
+            value: !value || value <= 0,
+            type: !selectedType,
+            category: !selectedCategory
+        }
+
+        setErrors(newErros);
+
+        if (Object.values(newErros).some(error => error)) {
             return;
         }
 
@@ -51,6 +65,12 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
         setDate("");
         setSelectedCategory("");
         setSelectedType("")
+        setErrors({
+            description: false,
+            value: false,
+            type: false,
+            category: false
+        });
     }
 
     const categoriesToShow = selectedType === 'Revenue' ? revenue : expense;
@@ -84,7 +104,19 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
             <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                     <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-[rgb(187,225,250)]' : 'text-gray-700'}`}>Descrição</label>
-                    <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} className="input-styled" placeholder="Ex: iFood" required />
+                    <input
+                        type="text"
+                        value={description}
+                        onChange={(e) => {
+                            setDescription(e.target.value);
+                            setErrors(prev => ({ ...prev, description: false }));
+                        }}
+                        className={`input-styled ${errors.description ? 'border-red-500 border-2' : ''}`}
+                        placeholder="Ex: iFood"
+                    />
+                    {errors.description && (
+                        <p className="text-red-500 text-xs mt-1">Por favor, preencha a descrição</p>
+                    )}
                 </div>
 
                 <div>
@@ -95,30 +127,53 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
                         onChange={(e) => {
                             const inputValue = e.target.value;
                             setValue(inputValue === '' ? '' : parseFloat(inputValue));
+                            setErrors(prev => ({ ...prev, value: false }));
                         }}
                         step="0,01"
-                        className="input-styled"
+                        className={`input-styled ${errors.value ? 'border-red-500 border-2' : ''}`}
                         placeholder="00,00"
-                        required
                     />
+                    {errors.value && (
+                        <p className="text-red-500 text-xs mt-1">Por favor, insira um valor válido maior que zero</p>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <select value={selectedType} onChange={(e) => setSelectedType(e.target.value as TypeTransaction)} className="input-styled" required>
+                        <select
+                            value={selectedType}
+                            onChange={(e) => {
+                                setSelectedType(e.target.value as TypeTransaction);
+                                setErrors(prev => ({ ...prev, type: false }));
+                            }}
+                            className={`input-styled ${errors.type ? 'border-red-500 border-2' : ''}`}
+                        >
                             <option value="">Tipo</option>
                             <option value="Revenue">Receita</option>
                             <option value="Expense">Despesa</option>
                         </select>
+                        {errors.type && (
+                            <p className="text-red-500 text-xs mt-1">Por favor, selecione um tipo</p>
+                        )}
                     </div>
 
                     <div>
-                        {selectedType &&
-                            <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value as any)} className="input-styled" required>
-                                <option value="">Categoria</option>
-                                {categoriesToShow.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                            </select>
-                        }
+
+                        <select
+                            value={selectedCategory}
+                            onChange={(e) => {
+                                setSelectedCategory(e.target.value as any);
+                                setErrors(prev => ({ ...prev, category: false }));
+                            }}
+                            className={`input-styled ${!selectedType ? 'opacity-50 cursor-not-allowed' : ''} ${errors.category ? 'border-red-500 border-2' : ''}`}
+                            disabled={!selectedType}
+                        >
+                            <option value="">Categoria</option>
+                            {categoriesToShow.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                        </select>
+                        {errors.category && (
+                            <p className="text-red-500 text-xs mt-1">Por favor, selecione uma categoria</p>
+                        )}
                     </div>
                 </div>
 
