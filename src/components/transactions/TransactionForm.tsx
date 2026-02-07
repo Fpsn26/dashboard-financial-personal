@@ -4,6 +4,7 @@ import { expense, ExpenseCategory, revenue, RevenueCategory, Transaction, TypeTr
 import { useEffect, useState } from "react";
 import { Plus, X } from 'lucide-react';
 import { useTheme } from "@/components/ThemeProvider";
+import CustomSelect from "../CustomSelect";
 
 interface TransactionFormProps {
     onAdd: (data: Omit<Transaction, 'id'>) => void;
@@ -83,6 +84,15 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
             setSelectedType(editingTransaction.type);
             setSelectedCategory(editingTransaction.category);
         }
+
+        if (!editingTransaction) {
+            setDescription("");
+            setValue('');
+            setDate("");
+            setSelectedCategory("");
+            setSelectedType("")
+        }
+
     }, [editingTransaction]);
 
     return (
@@ -140,37 +150,40 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
 
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <select
+                        <CustomSelect
                             value={selectedType}
-                            onChange={(e) => {
-                                setSelectedType(e.target.value as TypeTransaction);
+                            onChange={(value) => {
+                                setSelectedType(value as TypeTransaction);
                                 setErrors(prev => ({ ...prev, type: false }));
                             }}
-                            className={`input-styled ${errors.type ? 'border-red-500 border-2' : ''}`}
-                        >
-                            <option value="">Tipo</option>
-                            <option value="Revenue">Receita</option>
-                            <option value="Expense">Despesa</option>
-                        </select>
+                            options={[
+                                { value: '', label: 'Tipo' },
+                                { value: 'Revenue', label: 'Receita' },
+                                { value: 'Expense', label: 'Despesa' }
+                            ]}
+                            placeholder="Tipo"
+                            error={errors.type}
+                        />
                         {errors.type && (
                             <p className="text-red-500 text-xs mt-1">Por favor, selecione um tipo</p>
                         )}
                     </div>
 
                     <div>
-
-                        <select
+                        <CustomSelect
                             value={selectedCategory}
-                            onChange={(e) => {
-                                setSelectedCategory(e.target.value as any);
+                            onChange={(value) => {
+                                setSelectedCategory(value as any);
                                 setErrors(prev => ({ ...prev, category: false }));
                             }}
-                            className={`input-styled ${!selectedType ? 'opacity-50 cursor-not-allowed' : ''} ${errors.category ? 'border-red-500 border-2' : ''}`}
+                            options={[
+                                { value: '', label: 'Categoria' },
+                                ...categoriesToShow.map(cat => ({ value: cat, label: cat }))
+                            ]}
+                            placeholder="Categoria"
                             disabled={!selectedType}
-                        >
-                            <option value="">Categoria</option>
-                            {categoriesToShow.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                        </select>
+                            error={errors.category}
+                        />
                         {errors.category && (
                             <p className="text-red-500 text-xs mt-1">Por favor, selecione uma categoria</p>
                         )}

@@ -9,6 +9,7 @@ import useTransactions from "@/hooks/useTransactions";
 import { FilterState, Transaction, TypeTransaction } from "@/types";
 import { useState } from "react";
 import { TrendingUp, TrendingDown, DollarSign, Sun, Moon, LayoutList, PieChart as PieChartIcon } from 'lucide-react';
+import ChangelogModal from "@/components/ChangelogModal";
 
 export default function Page() {
     const { transaction, addTransaction, updateTransaction, deleteTransaction } = useTransactions();
@@ -46,6 +47,9 @@ export default function Page() {
             ? 'bg-[rgb(27,38,44)]'
             : 'bg-gray-50'
             }`}>
+
+            <ChangelogModal />
+
             <header className={`backdrop-blur-md border-b sticky top-0 z-40 transition-colors duration-300 ${theme === 'dark'
                 ? 'bg-[rgb(27,38,44)]/80 border-[rgb(50,130,184)]/30'
                 : 'bg-white/90 border-gray-200'
@@ -141,7 +145,7 @@ export default function Page() {
                     </div>
 
                     <div className="lg:col-span-8 order-1 lg:order-2 min-w-0">
-                        <div className={`flex flex-col h-full overflow-hidden max-h-127 rounded-xl border transition-colors ${theme === 'dark'
+                        <div className={`flex flex-col h-175 max-h-127 rounded-xl border transition-colors ${theme === 'dark'
                             ? 'glass-card'
                             : 'bg-white border-gray-200'
                             }`}>
@@ -187,7 +191,7 @@ export default function Page() {
                                 </div>
                             </div>
 
-                            <div className="flex-1 p-4 md:p-6 overflow-y-auto scrollbar-thin scrollbar-thumb-[rgb(50,130,184)]/20">
+                            <div className="flex-1 p-4 md:p-6 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-[rgb(50,130,184)]/20">
                                 {view === 'list' ? (
                                     <TransactionList transaction={filteredTransactions} onDelete={deleteTransaction} onEdit={updateTransaction} onStartEdit={setEditingTransaction} />
                                 ) : (

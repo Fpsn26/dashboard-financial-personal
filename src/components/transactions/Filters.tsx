@@ -1,8 +1,9 @@
 "use client"
 import { expense, FilterState, revenue } from "@/types";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Filter, X, RotateCcw, Check } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
+import CustomSelect from "../CustomSelect";
 
 interface FiltersProps {
     onFilterChange: (filters: FilterState) => void;
@@ -16,10 +17,11 @@ export default function Filters({ onFilterChange }: FiltersProps) {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [dropdown, setDropdown] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const handleApplyFilter = () => {
         onFilterChange({ type, category, startDate, endDate });
-        if (window.innerWidth < 1024) setDropdown(false);
+        setDropdown(false);
     }
 
     const handleClearFilter = () => {
@@ -29,8 +31,24 @@ export default function Filters({ onFilterChange }: FiltersProps) {
 
     const categoriesToShow = type === 'Revenue' ? revenue : type === 'Expense' ? expense : [...new Set([...revenue, ...expense])];
 
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setDropdown(false);
+            }
+        }
+
+        if (dropdown) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [dropdown]);
+
     return (
-        <div className="relative w-full sm:w-auto">
+        <div ref={dropdownRef} className="relative w-full sm:w-auto">
             <button
                 onClick={() => setDropdown(!dropdown)}
                 className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg border transition-all ${dropdown
@@ -47,18 +65,30 @@ export default function Filters({ onFilterChange }: FiltersProps) {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="flex flex-col gap-0.5">
                             <label className={`text-[10px] font-bold uppercase ml-1 ${isDark ? 'text-[rgb(187,225,250)]/40' : 'text-gray-600'}`}>Tipo</label>
-                            <select value={type} onChange={(e) => setType(e.target.value as any)} className="input-styled py-2 text-xs">
-                                <option value="all">Todos</option>
-                                <option value="Revenue">Receitas</option>
-                                <option value="Expense">Despesas</option>
-                            </select>
+                            <CustomSelect
+                                value={type}
+                                onChange={(value) => setType(value as any)}
+                                options={[
+                                    { value: 'all', label: 'Todos' },
+                                    { value: 'Revenue', label: 'Receitas' },
+                                    { value: 'Expense', label: 'Despesas' }
+                                ]}
+                                placeholder="Tipo"
+                                className="text-xs"
+                            />
                         </div>
                         <div className="flex flex-col gap-1">
                             <label className={`text-[10px] font-bold uppercase ml-1 ${isDark ? 'text-[rgb(187,225,250)]/40' : 'text-gray-600'}`}>Categoria</label>
-                            <select value={category} onChange={(e) => setCategory(e.target.value)} className="input-styled py-2 text-xs">
-                                <option value="">Todas</option>
-                                {categoriesToShow.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                            </select>
+                            <CustomSelect
+                                value={category}
+                                onChange={(value) => setCategory(value)}
+                                options={[
+                                    { value: '', label: 'Todas' },
+                                    ...categoriesToShow.map(cat => ({ value: cat, label: cat }))
+                                ]}
+                                placeholder="Categoria"
+                                className="text-xs"
+                            />
                         </div>
                         <div className="flex flex-col gap-1">
                             <label className={`text-[10px] font-bold uppercase ml-1 ${isDark ? 'text-[rgb(187,225,250)]/40' : 'text-gray-600'}`}>Data de Início</label>
