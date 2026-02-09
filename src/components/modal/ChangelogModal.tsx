@@ -20,6 +20,13 @@ interface VersionChangelog {
 
 const changelog: VersionChangelog[] = [
     {
+        version: "1.4.1",
+        date: "Fevereiro 2026",
+        updates: [
+            { type: "feature", text: "Leitura simplificada lista: Agora os números na lista são separados por pontos para facilitar a visualização dos valores" },
+        ]
+    },
+    {
         version: "1.4.0",
         date: "Fevereiro 2026",
         updates: [

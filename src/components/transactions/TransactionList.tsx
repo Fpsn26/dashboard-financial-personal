@@ -116,7 +116,10 @@ export default function TransactionList({ transaction, onDelete, onEdit, onStart
                                             ? isDark ? 'text-emerald-300' : 'text-emerald-600'
                                             : isDark ? 'text-red-300' : 'text-red-600'
                                             }`}>
-                                            {item.type === 'Revenue' ? '+' : '-'} R$ {item.value.toFixed(2)}
+                                            {item.type === 'Revenue' ? '+' : '-'} R$ {item.value.toLocaleString('pt-BR', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            })}
                                         </div>
                                         <div className="flex gap-2 opacity-100">
                                             <button onClick={() => onStartEdit(item)} className={`p-1 rounded ${isDark ? 'hover:bg-[rgb(50,130,184)]/40 text-[rgb(187,225,250)]/70' : 'hover:bg-blue-100 text-blue-600'}`}><Edit2 size={14} /></button>
