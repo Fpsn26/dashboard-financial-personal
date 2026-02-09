@@ -1,6 +1,6 @@
 "use client"
 
-import { useTheme } from "@/components/ThemeProvider";
+import { useTheme } from "@/components/theme/ThemeProvider";
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 

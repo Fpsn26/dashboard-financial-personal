@@ -12,8 +12,11 @@ export default function useTransactions() {
         try {
             const transactions = localStorage.getItem(STORAGE_KEY);
             if (transactions) {
-                const json = JSON.parse(transactions)
-                setTransaction(json);
+                const json = JSON.parse(transactions);
+                const sorted = json.sort((a: Transaction, b: Transaction) =>
+                    new Date(b.date).getTime() - new Date(a.date).getTime()
+                );
+                setTransaction(sorted);
             }
         } catch (error) {
             console.log("Erro ao carregar transações: ", error);
@@ -43,7 +46,12 @@ export default function useTransactions() {
                 date: data.date
             }
 
-            setTransaction(prev => [...prev, newTransaction])
+            setTransaction(prev => {
+                const updated = [newTransaction, ...prev];
+                return updated.sort((a, b) =>
+                    new Date(b.date).getTime() - new Date(a.date).getTime()
+                );
+            });
         } catch (error) {
             console.log("Erro na adição de nova transação: ", error);
         }

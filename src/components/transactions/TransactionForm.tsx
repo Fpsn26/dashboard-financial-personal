@@ -3,8 +3,8 @@
 import { expense, ExpenseCategory, revenue, RevenueCategory, Transaction, TypeTransaction } from "@/types";
 import { useEffect, useState } from "react";
 import { Plus, X } from 'lucide-react';
-import { useTheme } from "@/components/ThemeProvider";
-import CustomSelect from "../CustomSelect";
+import { useTheme } from "@/components/theme/ThemeProvider";
+import CustomSelect from "../select/CustomSelect";
 
 interface TransactionFormProps {
     onAdd: (data: Omit<Transaction, 'id'>) => void;

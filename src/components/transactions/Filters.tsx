@@ -2,8 +2,8 @@
 import { expense, FilterState, revenue } from "@/types";
 import { useState, useRef, useEffect } from "react";
 import { Filter, X, RotateCcw, Check } from "lucide-react";
-import { useTheme } from "@/components/ThemeProvider";
-import CustomSelect from "../CustomSelect";
+import { useTheme } from "@/components/theme/ThemeProvider";
+import CustomSelect from "../select/CustomSelect";
 
 interface FiltersProps {
     onFilterChange: (filters: FilterState) => void;

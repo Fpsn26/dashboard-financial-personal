@@ -1,7 +1,7 @@
 import { expense, revenue, Transaction, TypeTransaction } from "@/types";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { useTheme } from "@/components/ThemeProvider";
+import { useTheme } from "@/components/theme/ThemeProvider";
 
 interface PieChartProps {
     transaction: Transaction[];

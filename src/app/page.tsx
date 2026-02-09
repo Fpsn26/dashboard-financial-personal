@@ -4,12 +4,12 @@ import Filters from "@/components/transactions/Filters";
 import PieChart from "@/components/transactions/PieChart";
 import TransactionForm from "@/components/transactions/TransactionForm";
 import TransactionList from "@/components/transactions/TransactionList";
-import { useTheme } from "@/components/ThemeProvider";
+import { useTheme } from "@/components/theme/ThemeProvider";
 import useTransactions from "@/hooks/useTransactions";
 import { FilterState, Transaction, TypeTransaction } from "@/types";
 import { useState } from "react";
 import { TrendingUp, TrendingDown, DollarSign, Sun, Moon, LayoutList, PieChart as PieChartIcon } from 'lucide-react';
-import ChangelogModal from "@/components/ChangelogModal";
+import ChangelogModal from "@/components/modal/ChangelogModal";
 
 export default function Page() {
     const { transaction, addTransaction, updateTransaction, deleteTransaction } = useTransactions();
@@ -41,6 +41,21 @@ export default function Page() {
         .reduce((acc, t) => acc + t.value, 0);
 
     const total = totalRevenues - totalExpense;
+
+    const totalRevenuesFormatted = totalRevenues.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    const totalExpenseFormatted = totalExpense.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    const totalFormatted = total.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
 
     return (
         <div className={`min-h-screen overflow-x-hidden transition-colors duration-300 ${theme === 'dark'
@@ -94,7 +109,7 @@ export default function Page() {
                                         <p className={`text-[10px] uppercase font-bold tracking-wider ${theme === 'dark' ? 'text-emerald-300/60' : 'text-emerald-700'
                                             }`}>Receitas</p>
                                         <p className={`text-xl font-bold truncate ${theme === 'dark' ? 'text-emerald-300' : 'text-emerald-800'
-                                            }`}>R$ {totalRevenues.toFixed(2)}</p>
+                                            }`}>R$ {totalRevenuesFormatted}</p>
                                     </div>
                                     <TrendingUp size={20} className={theme === 'dark' ? 'text-emerald-400' : 'text-emerald-600'} />
                                 </div>
@@ -109,7 +124,7 @@ export default function Page() {
                                         <p className={`text-[10px] uppercase font-bold tracking-wider ${theme === 'dark' ? 'text-red-300/60' : 'text-red-700'
                                             }`}>Despesas</p>
                                         <p className={`text-xl font-bold truncate ${theme === 'dark' ? 'text-red-300' : 'text-red-800'
-                                            }`}>R$ {totalExpense.toFixed(2)}</p>
+                                            }`}>R$ {totalExpenseFormatted}</p>
                                     </div>
                                     <TrendingDown size={20} className={theme === 'dark' ? 'text-red-400' : 'text-red-600'} />
                                 </div>
@@ -132,7 +147,7 @@ export default function Page() {
                                         <p className={`text-2xl font-black truncate ${total >= 0
                                             ? theme === 'dark' ? 'text-blue-300' : 'text-blue-800'
                                             : theme === 'dark' ? 'text-red-300' : 'text-red-800'
-                                            }`}>R$ {total.toFixed(2)}</p>
+                                            }`}>R$ {totalFormatted}</p>
                                     </div>
                                     <DollarSign size={24} className={
                                         total >= 0
@@ -164,8 +179,8 @@ export default function Page() {
                                                 ? 'bg-[rgb(50,130,184)] text-white'
                                                 : 'bg-blue-600 text-white'
                                             : theme === 'dark'
-                                                ? 'text-[rgb(187,225,250)]/50'
-                                                : 'text-gray-600'
+                                                ? 'text-[rgb(187,225,250)]/50 hover:bg-gray-700 hover:text-white'
+                                                : 'text-gray-600 hover:bg-gray-300 hover:text-[rgb(13,26,99)]'
                                             }`}
                                     >
                                         <LayoutList size={16} />
@@ -178,8 +193,8 @@ export default function Page() {
                                                 ? 'bg-[rgb(50,130,184)] text-white'
                                                 : 'bg-blue-600 text-white'
                                             : theme === 'dark'
-                                                ? 'text-[rgb(187,225,250)]/50'
-                                                : 'text-gray-600'
+                                                ? 'text-[rgb(187,225,250)]/50 hover:bg-gray-700 hover:text-white'
+                                                : 'text-gray-600 hover:bg-gray-300 hover:text-[rgb(13,26,99)]'
                                             }`}
                                     >
                                         <PieChartIcon size={16} />

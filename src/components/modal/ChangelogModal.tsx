@@ -1,6 +1,6 @@
 "use client"
 
-import { useTheme } from "@/components/ThemeProvider";
+import { useTheme } from "@/components/theme/ThemeProvider";
 import { X, Sparkles, Bug, Zap, ChevronDown, PartyPopper } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -19,6 +19,17 @@ interface VersionChangelog {
 }
 
 const changelog: VersionChangelog[] = [
+    {
+        version: "1.4.0",
+        date: "Fevereiro 2026",
+        updates: [
+            { type: "feature", text: "Foco no bem-estar: Nova categoria 'Autocuidado' adicionada às suas Despesas" },
+            { type: "improvement", text: "Leitura simplificada: Agora os números são separados por pontos para facilitar a visualização dos valores" },
+            { type: "improvement", text: "Suas finanças em ordem: As transações mais recentes agora aparecem primeiro na lista" },
+            { type: "improvement", text: "Visualização por data: Transações agora são organizadas por dia, mês e ano para maior clareza" },
+            { type: "improvement", text: "Navegação intuitiva: Adicionamos animações para ajudar você a alternar entre a lista e os gráficos" },
+        ]
+    },
     {
         version: "1.3.0",
         date: "Fevereiro 2026",
