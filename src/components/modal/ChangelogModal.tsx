@@ -4,7 +4,7 @@ import { useTheme } from "@/components/theme/ThemeProvider";
 import { X, Sparkles, Bug, Zap, ChevronDown, PartyPopper } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const CURRENT_VERSION = "1.3.0";
+const CURRENT_VERSION = "1.4.1";
 const STORAGE_KEY = "app-version-seen";
 
 interface Update {
