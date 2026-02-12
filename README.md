@@ -34,7 +34,7 @@ Acesse o projeto online: [CLIQUE AQUI PARA ACESSAR O SITE](https://dashboard-fin
 
 1. Clone o repositório
 ```bash
-git clone [https://github.com/Fpsn26/dashboard-financial-personal](https://github.com/Fpsn26/dashboard-financial-personal)
+git clone https://github.com/Fpsn26/dashboard-financial-personal
 
 ```
 
