@@ -89,7 +89,7 @@ export default function Page() {
                             }`}
                     >
                         {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-                        <span className="hidden sm:inline">{theme === 'dark' ? 'Modo Light' : 'Modo Dark'}</span>
+                        <span className="sm:inline">{theme === 'dark' ? 'Modo Light' : 'Modo Dark'}</span>
                     </button>
                 </div>
             </header>
