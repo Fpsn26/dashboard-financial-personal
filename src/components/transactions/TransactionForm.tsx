@@ -5,6 +5,15 @@ import { useEffect, useState } from "react";
 import { Plus, X } from 'lucide-react';
 import { useTheme } from "@/components/theme/ThemeProvider";
 import CustomSelect from "../select/CustomSelect";
+import useCategories from "@/hooks/useCategories";
+import { DatePicker } from "../tailgrids/core/single-date";
+
+function formatDateToISO(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
 
 interface TransactionFormProps {
     onAdd: (data: Omit<Transaction, 'id'>) => void;
@@ -18,15 +27,20 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
     const isDark = theme === 'dark';
     const [description, setDescription] = useState("");
     const [value, setValue] = useState<number | ''>('');
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState<Date | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<ExpenseCategory | RevenueCategory | ''>("");
     const [selectedType, setSelectedType] = useState<TypeTransaction | ''>("");
     const [errors, setErrors] = useState({
         description: false,
         value: false,
         type: false,
-        category: false
-    })
+        category: false,
+        duplicateCategory: false,
+        customCategory: false
+    });
+    const { customRevenue, customExpense, addCategory } = useCategories();
+    const [showCustomInput, setShowCustomInput] = useState(false);
+    const [customCategoryText, setCustomCategoryText] = useState<ExpenseCategory | RevenueCategory | ''>('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -35,7 +49,9 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
             description: !description.trim(),
             value: !value || value <= 0,
             type: !selectedType,
-            category: !selectedCategory
+            category: !selectedCategory,
+            duplicateCategory: false,
+            customCategory: false
         }
 
         setErrors(newErros);
@@ -44,7 +60,9 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
             return;
         }
 
-        const finalDate = date || new Date().toISOString().split('T')[0];
+        const finalDate = date
+            ? formatDateToISO(date)
+            : formatDateToISO(new Date());
 
         const transactionData: Omit<Transaction, 'id'> = {
             description,
@@ -63,24 +81,28 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
 
         setDescription("");
         setValue('');
-        setDate("");
+        setDate(null);
         setSelectedCategory("");
         setSelectedType("")
         setErrors({
             description: false,
             value: false,
             type: false,
-            category: false
+            category: false,
+            duplicateCategory: false,
+            customCategory: false
         });
     }
 
-    const categoriesToShow = selectedType === 'Revenue' ? revenue : expense;
+    const categoriesToShow = selectedType === 'Revenue'
+        ? [...revenue, ...customRevenue]
+        : [...expense, ...customExpense];
 
     useEffect(() => {
         if (editingTransaction) {
             setDescription(editingTransaction.description);
             setValue(editingTransaction.value);
-            setDate(editingTransaction.date);
+            setDate(new Date(editingTransaction.date));
             setSelectedType(editingTransaction.type);
             setSelectedCategory(editingTransaction.category);
         }
@@ -88,7 +110,7 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
         if (!editingTransaction) {
             setDescription("");
             setValue('');
-            setDate("");
+            setDate(null);
             setSelectedCategory("");
             setSelectedType("")
         }
@@ -173,12 +195,18 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
                         <CustomSelect
                             value={selectedCategory}
                             onChange={(value) => {
-                                setSelectedCategory(value as any);
+                                if (value !== 'customCategory') {
+                                    setSelectedCategory(value as any);
+                                    setShowCustomInput(false);
+                                } else {
+                                    setShowCustomInput(true);
+                                }
                                 setErrors(prev => ({ ...prev, category: false }));
                             }}
                             options={[
                                 { value: '', label: 'Categoria' },
-                                ...categoriesToShow.map(cat => ({ value: cat, label: cat }))
+                                ...categoriesToShow.map(cat => ({ value: cat, label: cat })),
+                                { value: 'customCategory', label: '+ Adicionar Categoria' }
                             ]}
                             placeholder="Categoria"
                             disabled={!selectedType}
@@ -188,11 +216,64 @@ export default function TransactionForm({ onAdd, onUpdate, editingTransaction, o
                             <p className="text-red-500 text-xs mt-1">Por favor, selecione uma categoria</p>
                         )}
                     </div>
+
+                    {showCustomInput &&
+                        <div className="col-span-2 flex flex-col gap-2">
+                            <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-[rgb(187,225,250)]' : 'text-gray-700'}`}>Nova Categoria</label>
+
+                            <div className="grid grid-cols-[1fr_auto] gap-2 items-start">
+                                <div className="flex flex-col w-full">
+                                    <input
+                                        type="text"
+                                        placeholder="Ex: Academia"
+                                        value={customCategoryText}
+                                        onChange={(e) => {
+                                            setCustomCategoryText(e.target.value as RevenueCategory | ExpenseCategory);
+                                            setErrors(prev => ({ ...prev, duplicateCategory: false, customCategory: false }));
+                                        }}
+                                        className={`input-styled w-full h-10.5 ${errors.customCategory || errors.duplicateCategory ? 'border-red-500 border-2' : ''}`}
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        if (customCategoryText === '') {
+                                            setErrors(prev => ({ ...prev, customCategory: true }));
+                                            return;
+                                        }
+                                        const formatedCustomCategory = customCategoryText.charAt(0).toUpperCase() + customCategoryText.slice(1).toLowerCase();
+                                        if ((categoriesToShow as string[]).includes(formatedCustomCategory)) {
+                                            setErrors(prev => ({ ...prev, duplicateCategory: true }));
+                                            return;
+                                        }
+                                        addCategory(formatedCustomCategory as any, selectedType as TypeTransaction);
+                                        setShowCustomInput(false);
+                                        setSelectedCategory(formatedCustomCategory as any);
+                                        setCustomCategoryText('');
+                                    }}
+                                    className="btn-primary px-6 h-10.5 whitespace-nowrap text-sm font-semibold"
+                                >
+                                    Adicionar
+                                </button>
+
+                                {(errors.duplicateCategory || errors.customCategory) && (
+                                    <div className="col-span-2">
+                                        {errors.duplicateCategory && (
+                                            <p className="text-red-500 text-xs mt-1">Essa categoria já existe</p>
+                                        )}
+                                        {errors.customCategory && (
+                                            <p className="text-red-500 text-xs mt-1">Por favor, digite o nome da categoria</p>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    }
                 </div>
 
                 <div>
                     <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-[rgb(187,225,250)]' : 'text-gray-700'}`}>Data (Opcional)</label>
-                    <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="input-styled" />
+                    <DatePicker value={date} onChange={(date: Date | null) => setDate(date)} className="bg-[rgba(var(--primary-900),0.5)] border-1px border-solid border-[rgba(var(--primary-600), 0.3)] text-sm" />
                 </div>
 
                 <button type="submit" className="btn-primary">

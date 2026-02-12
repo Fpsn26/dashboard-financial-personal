@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Filter, X, RotateCcw, Check } from "lucide-react";
 import { useTheme } from "@/components/theme/ThemeProvider";
 import CustomSelect from "../select/CustomSelect";
+import { RangeDatePicker } from "../tailgrids/core/range-date";
 
 interface FiltersProps {
     onFilterChange: (filters: FilterState) => void;
@@ -14,18 +15,23 @@ export default function Filters({ onFilterChange }: FiltersProps) {
     const isDark = theme === 'dark';
     const [type, setType] = useState<'all' | 'Revenue' | 'Expense'>('all');
     const [category, setCategory] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [endDate, setEndDate] = useState<Date | null>(null);
     const [dropdown, setDropdown] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const handleApplyFilter = () => {
-        onFilterChange({ type, category, startDate, endDate });
+        onFilterChange({
+            type,
+            category,
+            startDate: startDate ? startDate.toISOString().split('T')[0] : '',
+            endDate: endDate ? endDate.toISOString().split('T')[0] : ''
+        });
         setDropdown(false);
     }
 
     const handleClearFilter = () => {
-        setType('all'); setCategory(''); setStartDate(''); setEndDate('');
+        setType('all'); setCategory(''); setStartDate(null); setEndDate(null);
         onFilterChange({ type: 'all', category: '', startDate: '', endDate: '' });
     }
 
@@ -90,13 +96,12 @@ export default function Filters({ onFilterChange }: FiltersProps) {
                                 className="text-xs"
                             />
                         </div>
-                        <div className="flex flex-col gap-1">
-                            <label className={`text-[10px] font-bold uppercase ml-1 ${isDark ? 'text-[rgb(187,225,250)]/40' : 'text-gray-600'}`}>Data de Início</label>
-                            <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="input-styled py-2 text-xs" />
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <label className={`text-[10px] font-bold uppercase ml-1 ${isDark ? 'text-[rgb(187,225,250)]/40' : 'text-gray-600'}`}>Data de Fim</label>
-                            <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="input-styled py-2 text-xs" />
+                        <div className="flex flex-col gap-1 col-span-2">
+                            <label className={`text-[10px] font-bold uppercase ml-1 ${isDark ? 'text-[rgb(187,225,250)]/40' : 'text-gray-600'}`}>Intervalo de Datas</label>
+                            <RangeDatePicker defaultStartDate={startDate ?? undefined} defaultEndDate={endDate ?? undefined} onDateChange={(start, end) => {
+                                setStartDate(start);
+                                setEndDate(end);
+                            }} />
                         </div>
                     </div>
                     <div className={`flex flex-col sm:flex-row gap-2 mt-3 pt-2 border-t ${isDark ? 'border-[rgb(50,130,184)]/20' : 'border-gray-200'}`}>

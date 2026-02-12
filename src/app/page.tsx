@@ -57,6 +57,11 @@ export default function Page() {
         maximumFractionDigits: 2
     });
 
+    function cancelEdit(id: string) {
+        deleteTransaction(id);
+        setEditingTransaction(null);
+    }
+
     return (
         <div className={`min-h-screen overflow-x-hidden transition-colors duration-300 ${theme === 'dark'
             ? 'bg-[rgb(27,38,44)]'
@@ -208,7 +213,7 @@ export default function Page() {
 
                             <div className="flex-1 p-4 md:p-6 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-[rgb(50,130,184)]/20">
                                 {view === 'list' ? (
-                                    <TransactionList transaction={filteredTransactions} onDelete={deleteTransaction} onEdit={updateTransaction} onStartEdit={setEditingTransaction} />
+                                    <TransactionList transaction={filteredTransactions} onDelete={cancelEdit} onEdit={updateTransaction} onStartEdit={setEditingTransaction} />
                                 ) : (
                                     <div className="pb-8 md:pb-12">
                                         <PieChart transaction={filteredTransactions} type={chartType} />

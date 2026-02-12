@@ -4,7 +4,7 @@ import { useTheme } from "@/components/theme/ThemeProvider";
 import { X, Sparkles, Bug, Zap, ChevronDown, PartyPopper } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const CURRENT_VERSION = "1.4.1";
+const CURRENT_VERSION = "1.5.0";
 const STORAGE_KEY = "app-version-seen";
 
 interface Update {
@@ -20,10 +20,21 @@ interface VersionChangelog {
 
 const changelog: VersionChangelog[] = [
     {
+        version: "1.5.0",
+        date: "Fevereiro 2026",
+        updates: [
+            { type: "bugfix", text: "Edição mais ágil: Agora o modo de edição fecha automaticamente caso você excluir uma transação" },
+            { type: "feature", text: "Sua organização, suas regras: Novo botão para criar e personalizar suas próprias categorias" },
+            { type: "improvement", text: "Gráficos aprimorados: Agora com exibição de %, cores vibrantes e suporte total ao Modo Escuro" },
+            { type: "improvement", text: "Mais detalhes no gráfico: Aumentamos o limite de exibição de 5 para 10 categorias simultâneas" },
+            { type: "feature", text: "Novo seletor de data: Um calendário totalmente personalizado e mais intuitivo para seus lançamentos" },
+        ]
+    },
+    {
         version: "1.4.1",
         date: "Fevereiro 2026",
         updates: [
-            { type: "feature", text: "Leitura simplificada lista: Agora os números na lista são separados por pontos para facilitar a visualização dos valores" },
+            { type: "feature", text: "Leitura simplificada na lista: Agora os números na lista são separados por pontos para facilitar a visualização dos valores" },
         ]
     },
     {
@@ -158,15 +169,6 @@ export default function ChangelogModal() {
                                     Versão {latestVersion.version} - {latestVersion.date}
                                 </p>
                             </div>
-                            <button
-                                onClick={handleClose}
-                                className={`p-2 rounded-lg transition-colors shrink-0 ${isDark
-                                    ? 'hover:bg-[rgb(50,130,184)]/20 text-[rgb(187,225,250)]/60'
-                                    : 'hover:bg-gray-100 text-gray-600'
-                                    }`}
-                            >
-                                <X size={20} />
-                            </button>
                         </div>
                     </div>
 

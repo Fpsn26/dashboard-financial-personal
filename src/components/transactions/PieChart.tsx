@@ -1,4 +1,4 @@
-import { expense, revenue, Transaction, TypeTransaction } from "@/types";
+import { Transaction, TypeTransaction } from "@/types";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { useTheme } from "@/components/theme/ThemeProvider";
@@ -29,10 +29,17 @@ export default function PieChart({ transaction, type }: PieChartProps) {
 
     const labels = Object.keys(grouped);
     const values = Object.values(grouped);
-    const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+    const total = values.reduce((sum, value) => sum + value, 0);
+    const percentages = values.map(value => (value / total) * 100);
+    const colors = ['#1E3A8A', '#3B82F6', '#10B981', '#34D399', '#F59E0B', '#8B5CF6', '#06B6D4', '#EC4899', '#64748B', '#6366F1'];
+
+    const formatedLabels = values.map((value, index) => `${labels[index]}: ${percentages[index].toFixed(2)}% (R$ ${value.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    })})`);
 
     const data = {
-        labels,
+        labels: formatedLabels,
         datasets: [{
             data: values,
             backgroundColor: colors,
@@ -50,7 +57,7 @@ export default function PieChart({ transaction, type }: PieChartProps) {
                     color: isDark ? 'rgb(187, 225, 250)' : 'rgb(31, 41, 55)',
                     font: {
                         size: 12,
-                        weight: '500' as const
+                        weight: 500 as const
                     }
                 }
             },
@@ -67,7 +74,7 @@ export default function PieChart({ transaction, type }: PieChartProps) {
     return (
         <div className="flex items-center justify-center w-full h-full">
             <div className="w-full max-w-xs md:max-w-sm">
-                <Pie data={data} />
+                <Pie data={data} options={options} />
             </div>
         </div>
     );
