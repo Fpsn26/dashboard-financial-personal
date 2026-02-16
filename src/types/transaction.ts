@@ -1,16 +1,31 @@
 export type Transaction = {
-    id: string;
-    description: string;
-    value: number;
-    type: TypeTransaction;
-    category: CategoryType;
-    date: string;
-}
+  id: string;
+  description: string;
+  value: number;
+  type: TypeTransaction;
+  category: CategoryType;
+  date: string;
+};
 
-export type TypeTransaction = 'Revenue' | 'Expense';
+export type TypeTransaction = "Revenue" | "Expense";
 
-export type ExpenseCategory = 'Alimentação' | 'Transporte' | 'Saúde' | 'Lazer e Viagens' | 'Autocuidado' | 'Habitação' | 'Educação' | 'Streaming' | 'Cuidados com Pets' | 'Apostas (Bets)';
+export type ExpenseCategory =
+  | "Alimentação"
+  | "Transporte"
+  | "Saúde"
+  | "Lazer e Viagens"
+  | "Autocuidado"
+  | "Habitação"
+  | "Educação"
+  | "Streaming"
+  | "Cuidados com Pets"
+  | "Apostas (Bets)";
 
-export type RevenueCategory = 'Salário' | 'Freelance' | 'Investimento' | 'Restituição IR' | 'Benefícios Sociais';
+export type RevenueCategory =
+  | "Salário"
+  | "Freelance"
+  | "Investimento"
+  | "Restituição IR"
+  | "Benefícios Sociais";
 
 type CategoryType = RevenueCategory | ExpenseCategory;
