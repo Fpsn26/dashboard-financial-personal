@@ -132,7 +132,7 @@ export function DatePicker({
         createPortal(
           <div
             style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
-            className={`fixed z-[9999] w-80 rounded-lg border shadow-xl animate-in fade-in zoom-in-95 overflow-hidden ${
+            className={`fixed z-9999 w-80 rounded-lg border shadow-xl animate-in fade-in zoom-in-95 overflow-hidden ${
               isDark ? "bg-[rgb(27,38,44)] border-[rgb(50,130,184)]/40" : "bg-white border-gray-200"
             }`}
             ref={dropdownRef}

@@ -5,7 +5,6 @@ import PieChart from "@/components/transactions/PieChart";
 import TransactionForm from "@/components/transactions/TransactionForm";
 import TransactionList from "@/components/transactions/TransactionList";
 import { useTheme } from "@/components/theme/ThemeProvider";
-import useTransactions from "@/hooks/useTransactions";
 import { FilterState, Transaction, TypeTransaction } from "@/types";
 import { useState } from "react";
 import {
@@ -18,9 +17,11 @@ import {
   PieChart as PieChartIcon,
 } from "lucide-react";
 import ChangelogModal from "@/components/modal/ChangelogModal";
+import { useTransactionStore } from "@/store/useTransactionStore";
 
 export default function Page() {
-  const { transaction, addTransaction, updateTransaction, deleteTransaction } = useTransactions();
+  const { transaction, addTransaction, updateTransaction, deleteTransaction } =
+    useTransactionStore();
   const { theme, toggleTheme } = useTheme();
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [activeFilters, setActiveFilters] = useState<FilterState>({

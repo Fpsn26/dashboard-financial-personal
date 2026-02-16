@@ -115,7 +115,7 @@ export default function TransactionForm({
     if (editingTransaction) {
       setDescription(editingTransaction.description);
       setValue(editingTransaction.value);
-      setDate(new Date(editingTransaction.date));
+      setDate(new Date(editingTransaction.date + "T00:00:00"));
       setSelectedType(editingTransaction.type);
       setSelectedCategory(editingTransaction.category);
     }
