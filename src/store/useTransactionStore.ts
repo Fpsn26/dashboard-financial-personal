@@ -1,4 +1,5 @@
 import { Transaction } from "@/types";
+import { sortByDate } from "@/utils/transaction";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -9,9 +10,7 @@ interface TransactionStore {
   deleteTransaction: (id: string) => void;
 }
 
-function sortByDate(transactions: Transaction[]): Transaction[] {
-  return [...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-}
+sortByDate([]);
 
 export const useTransactionStore = create<TransactionStore>()(
   persist(

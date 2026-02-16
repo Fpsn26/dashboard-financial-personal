@@ -14,13 +14,9 @@ import { useTheme } from "@/components/theme/ThemeProvider";
 import CustomSelect from "../select/CustomSelect";
 import useCategories from "@/hooks/useCategories";
 import { DatePicker } from "../tailgrids/core/single-date";
+import { formatDateToISO } from "@/utils/date";
 
-function formatDateToISO(date: Date): string {
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const day = date.getDate().toString().padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
+formatDateToISO(new Date());
 
 interface TransactionFormProps {
   onAdd: (data: Omit<Transaction, "id">) => void;
