@@ -65,6 +65,9 @@ Durante o desenvolvimento deste projeto, aprimorei meus conhecimentos em:
 - **Gráficos Dinâmicos**: Integração do Chart.js com o estado do React para atualizações em tempo real.
 - **Boas Práticas**: Separação de lógica pura em utilitários testáveis, commits com Conventional Commits e uso de Conventional Commits.
 
+## ⚖️ Licença
+Este projeto esta licenciado sob a licenca MIT. Consulte o arquivo [LICENSE](./LICENSE) para mais detalhes.
+
 ## Contribuições e Feedbacks
 Feedbacks e sugestões de melhorias são bem-vindos e fundamentais para o aprimoramento deste projeto. Sinta-se à vontade para entrar em contato ou abrir uma issue no repositório.
 
